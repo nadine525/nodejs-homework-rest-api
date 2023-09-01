@@ -1,7 +1,9 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
-const { handleMongooseError } = require("../middlewares");
+const { handleMongooseError } = require("../helpers");
+
+const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const contactSchema = new Schema(
   {
@@ -12,6 +14,7 @@ const contactSchema = new Schema(
     email: {
       type: String,
       required: true,
+      match: emailRegexp,
     },
     phone: {
       type: String,
@@ -20,6 +23,11 @@ const contactSchema = new Schema(
     favorite: {
       type: Boolean,
       default: false,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "user",
     },
   },
   { versionKey: false, timestamps: true }
@@ -32,7 +40,7 @@ const contactsSchema = Joi.object({
     "string.empty": "name field is required",
     "any.required": "missing required name field",
   }),
-  email: Joi.string().trim().pattern(/@/).required().messages({
+  email: Joi.string().trim().pattern(emailRegexp).required().messages({
     "string.empty": "email field is required",
     "any.required": "missing required email field",
   }),
