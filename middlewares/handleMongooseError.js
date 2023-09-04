@@ -1,6 +1,10 @@
-const handleMongooseError = (error, data, next) => {
-  error.staus = 400;
-  next();
-};
+// const handleMongooseError = (error, data, next) => {
+//   const { name, code } = error;
 
-module.exports = handleMongooseError;
+//   const status = name === "MongoServerError" && code === 11000 ? 409 : 400;
+//   error.status = status;
+
+//   next();
+// };
+
+// module.exports = handleMongooseError;
