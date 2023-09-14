@@ -13,12 +13,22 @@ const cntrl = require("../../controllers/auth");
 
 const router = express.Router();
 
+//SING UP
 router.post(
   "/register",
   validateMainBody(schemas.registerSchema),
   cntrl.register
 );
 
+router.get("/verify/:verificationToken", cntrl.verifyEmail);
+
+router.post(
+  "/verify",
+  validateMainBody(schemas.emailSchema),
+  cntrl.resendVerifyEmail
+);
+
+//SING IN
 router.post("/login", validateMainBody(schemas.loginSchema), cntrl.login);
 
 router.get("/current", authenticate, cntrl.getCurrent);
